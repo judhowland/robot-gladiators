@@ -35,13 +35,13 @@ var fight = function(enemyNames) {
             if (confirmSkip) {
                 window.alert(playerName + " has decided to skip this fight. Goodbye!");
                 //subtract money from playerMoney for skipping
-                playerMoney = playerMoney - 10;
+                playerMoney = Math.max(0, playerMoney - 10);
                 console.log("playerMoney", playerMoney);
                 break;
             }
         }
                //remove enemy's health by subtracting the amount set in the playerAttack variable
-            enemyHealth = enemyHealth - playerAttack;
+            enemyHealth = Math.max(0, enemyHealth - playerAttack);
             console.log(playerName + " attacked " + enemyNames + ". " + enemyNames + " now has " + enemyHealth + " health remaining.");
 
                 // check enemy's health
@@ -59,7 +59,8 @@ var fight = function(enemyNames) {
             }
 
             // Subtract the value of `enemyAttack` from the value of `playerHealth` and use that result to update the value in the `playerHealth` variable.
-            playerHealth = playerHealth - enemyAttack;  
+            var damage = randomNumber(enemyAttack - 3, enemyAttack);
+            playerHealth = Math.max(0, playerHealth - damage);  
 
             // Log a resulting message to the console so we know that it worked.
             console.log(enemyNames + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining.");
@@ -76,6 +77,14 @@ var fight = function(enemyNames) {
         }
     };
 
+//function to generate a random numeric value
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    return value;
+}
+
+
 // function to start a new game
 var startGame = function() {
     // reset player stats
@@ -90,7 +99,7 @@ var startGame = function() {
             // pick a new enemy to fight based on the index of the enemyNames array
             var pickedEnemyName = enemyNames[i];
             // reset enemy health to 50
-            enemyHealth = 50;
+            enemyHealth = randomNumber(40, 60);
             // call fight function with enemy robot
             fight(pickedEnemyName);
     
